@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import axios from 'axios';
 
 const options = {
   providers: [
@@ -17,9 +18,28 @@ const options = {
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
-        const user = { id: 1, name: 'allu', email: 'allu@gmail.com' };
+        console.log('credentials --> ', credentials);
+        //const user = { id: 1, name: 'allu', email: 'allu@gmail.com' };
+        try {
+          const { data } = await axios.post(
+            'https://surveys-api-5xzb7.ondigitalocean.app/api/auth/signin2',
+            {
+              username: credentials.username,
+              password: credentials.password,
+            }
+          );
+          console.log('res.data -> ', data);
+          const user = { id: data.id, name: data.username, email: null };
+          return Promise.resolve(user);
+        } catch (error) {
+          return Promise.reject(
+            `${credentials.onErrorRedirect}?error=${encodeURIComponent(
+              'Incorrect username or password'
+            )}`
+          );
+        }
 
-        if (user) {
+        /* if (user) {
           // Any object returned will be saved in `user` property of the JWT
           return Promise.resolve(user);
         } else {
@@ -28,7 +48,7 @@ const options = {
           // You can also Reject this callback with an Error or with a URL:
           // return Promise.reject(new Error('error message')); // Redirect to error page
           //return Promise.reject('http://localhost:3000'); // Redirect to a URL
-        }
+        } */
       },
     }),
   ],
