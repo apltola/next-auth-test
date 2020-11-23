@@ -27,26 +27,6 @@ export default function SigninPage({ csrfToken }) {
           token={csrfToken}
           btnText="Sign in"
         />
-        {/* <form onSubmit={onSubmit}>
-          <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-          <label>
-            Username
-            <input
-              name="username"
-              type="text"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </label>
-          <label>
-            Password
-            <input
-              name="password"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          <button type="submit">Sign in</button>
-        </form> */}
         <div className="text-red-500 pt-4">{router.query.error}</div>
       </div>
     </div>

@@ -43,6 +43,7 @@ const options = {
   pages: {
     signIn: '/auth/signin',
   },
+  secret: process.env.JWT_SECRET,
 };
 
 export default (req, res) => NextAuth(req, res, options);
