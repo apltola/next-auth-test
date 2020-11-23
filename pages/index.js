@@ -1,6 +1,9 @@
-import Nav from '../components/nav'
+import Nav from '../components/nav';
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 export default function IndexPage() {
+  const [session, loading] = useSession();
+
   return (
     <div>
       <Nav />
@@ -9,6 +12,18 @@ export default function IndexPage() {
           Next.js + Tailwind CSS 2.0
         </h1>
       </div>
+      {!session && (
+        <div className="text-center">
+          Not signed in <br />
+          <button onClick={signIn}>Sign in</button>
+        </div>
+      )}
+      {session && (
+        <div className="text-center">
+          Signed in as {session.user.name} <br />
+          <button onClick={signOut}>Sign out</button>
+        </div>
+      )}
     </div>
-  )
+  );
 }
