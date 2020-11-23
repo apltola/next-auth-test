@@ -10,7 +10,7 @@ const options = {
         username: {
           label: 'Username',
           type: 'text',
-          placeholder: 'username...',
+          placeholder: 'username',
         },
         password: { label: 'Password', type: 'password' },
       },
@@ -19,7 +19,7 @@ const options = {
         //const user = { id: 1, name: 'allu', email: 'allu@gmail.com' };
         try {
           const { data } = await axios.post(
-            'https://surveys-api-5xzb7.ondigitalocean.app/api/auth/signin2',
+            `https://surveys-api-5xzb7.ondigitalocean.app/api/auth/${credentials.method}2`,
             {
               username: credentials.username,
               password: credentials.password,
@@ -29,10 +29,12 @@ const options = {
           const user = { id: data.id, name: data.username, email: null };
           return Promise.resolve(user);
         } catch (error) {
+          const msg =
+            credentials.method === 'signup'
+              ? 'Error occurred during sign up'
+              : 'Incorrect username or password';
           return Promise.reject(
-            `${credentials.onErrorRedirect}?error=${encodeURIComponent(
-              'Incorrect username or password'
-            )}`
+            `${credentials.onErrorRedirect}?error=${encodeURIComponent(msg)}`
           );
         }
       },

@@ -4,8 +4,6 @@ import Link from 'next/link';
 
 export default function IndexPage() {
   const [session, loading] = useSession();
-  console.log('testi');
-
   return (
     <div>
       <Nav />
@@ -20,6 +18,10 @@ export default function IndexPage() {
           {/* <button onClick={signIn}>Sign in</button> */}
           <Link href="/auth/signin">
             <a>sign in</a>
+          </Link>
+          <br></br>
+          <Link href="/auth/signup">
+            <a>sign up</a>
           </Link>
         </div>
       )}

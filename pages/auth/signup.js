@@ -2,21 +2,19 @@ import { csrfToken, signIn } from 'next-auth/client';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-export default function SigninPage({ csrfToken }) {
+export default function SignupPage({ csrfToken }) {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  console.log('nextauthurl ---> ', process.env.NEXTAUTH_URL);
-
   const onSubmit = async (e) => {
     e.preventDefault();
     await signIn('credentials', {
-      username,
-      password,
+      username: username,
+      password: password,
       callbackUrl: process.env.NEXT_PUBLIC_BASE_URL,
       onErrorRedirect: router.pathname,
-      method: 'signin',
+      method: 'signup',
     });
   };
 
@@ -47,7 +45,7 @@ export default function SigninPage({ csrfToken }) {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          <button type="submit">Sign in</button>
+          <button type="submit">Sign up</button>
         </form>
         <div className="text-red-500 pt-4">{router.query.error}</div>
       </div>
@@ -55,7 +53,7 @@ export default function SigninPage({ csrfToken }) {
   );
 }
 
-SigninPage.getInitialProps = async (context) => {
+SignupPage.getInitialProps = async (context) => {
   return {
     csrfToken: await csrfToken(context),
   };
