@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 export default function IndexPage() {
   const [session, loading] = useSession();
+  console.log('testi');
 
   return (
     <div>
