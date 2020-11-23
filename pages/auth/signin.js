@@ -1,15 +1,12 @@
 import { csrfToken, signIn } from 'next-auth/client';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import AuthForm from '../../components/authForm';
 
 export default function SigninPage({ csrfToken }) {
   const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  console.log('nextauthurl ---> ', process.env.NEXTAUTH_URL);
-
-  const onSubmit = async (e) => {
+  const onSubmit = async (e, username, password) => {
     e.preventDefault();
     await signIn('credentials', {
       username,
@@ -24,12 +21,13 @@ export default function SigninPage({ csrfToken }) {
     <div className="flex justify-center">
       <div>
         <h1 className="text-3xl font-bold">Sign in to your account</h1>
-        {/* <AuthForm method="signin" /> */}
-        <form
-          onSubmit={
-            onSubmit
-          } /* method="post" action="/api/auth/callback/credentials" */
-        >
+        <AuthForm
+          onSubmit={onSubmit}
+          method="signin"
+          token={csrfToken}
+          btnText="Sign in"
+        />
+        {/* <form onSubmit={onSubmit}>
           <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
           <label>
             Username
@@ -48,7 +46,7 @@ export default function SigninPage({ csrfToken }) {
             />
           </label>
           <button type="submit">Sign in</button>
-        </form>
+        </form> */}
         <div className="text-red-500 pt-4">{router.query.error}</div>
       </div>
     </div>
