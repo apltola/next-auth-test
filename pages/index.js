@@ -1,5 +1,6 @@
 import Nav from '../components/nav';
 import { signIn, signOut, useSession } from 'next-auth/client';
+import Link from 'next/link';
 
 export default function IndexPage() {
   const [session, loading] = useSession();
@@ -15,7 +16,10 @@ export default function IndexPage() {
       {!session && (
         <div className="text-center">
           Not signed in <br />
-          <button onClick={signIn}>Sign in</button>
+          {/* <button onClick={signIn}>Sign in</button> */}
+          <Link href="/auth/signin">
+            <a>sign in</a>
+          </Link>
         </div>
       )}
       {session && (
