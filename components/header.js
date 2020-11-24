@@ -114,7 +114,7 @@ export default function Header() {
       {showMobileMenu && (
         <div
           style={{ opacity: '.95' }}
-          className="absolute top-1 inset-x-0 pt-2 pb-8 md:hidden bg-gray-900 text-white"
+          className="absolute top-1 inset-x-0 pt-2 pb-8 md:hidden bg-gray-900 text-white z-50"
         >
           <div className="flex flex-col items-center">
             {!session && (
@@ -132,7 +132,7 @@ export default function Header() {
                   </button>
                 </Link>
                 <Link href="/auth/signup">
-                  <button onClick={closeMenu} className="mt-6">
+                  <button onClick={closeMenu} className="mt-8">
                     <a className="text-white text-center text-lg font-bold">
                       <FontAwesomeIcon
                         icon="user-plus"
@@ -156,7 +156,7 @@ export default function Header() {
                   </button>
                 </Link>
                 <Link href="/surveys/new">
-                  <button onClick={closeMenu} className="mt-6">
+                  <button onClick={closeMenu} className="mt-8">
                     <a className="text-white text-center text-lg font-bold">
                       <FontAwesomeIcon
                         icon="plus-square"
@@ -168,7 +168,7 @@ export default function Header() {
                   </button>
                 </Link>
                 <Link href="/auth/signup">
-                  <button onClick={signOut} className="mt-6">
+                  <button onClick={signOut} className="mt-8">
                     <a className="text-white text-center text-lg font-bold">
                       <FontAwesomeIcon
                         icon="sign-out-alt"
