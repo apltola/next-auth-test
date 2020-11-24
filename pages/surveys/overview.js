@@ -25,17 +25,17 @@ export default function SurveyOverview({ token, surveys }) {
 
 export async function getServerSideProps(ctx) {
   const { req } = ctx;
-  const secret = process.env.JWT_SECRET;
-  const token = await jwt.getToken({ req, secret });
-
+  //const secret = process.env.JWT_SECRET;
+  const token = await jwt.getToken({ req, secret: process.env.JWT_SECRET });
+  console.log('keksi --> ', req.headers);
   let surveys = [];
   if (token) {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`,
-      {
-        headers: req.headers,
-      }
-    );
+    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`;
+    const res = await axios.get(url, {
+      headers: {
+        cookie: req.headers.cookie,
+      },
+    });
     surveys = res.data;
   }
 
