@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import buildApiClient from '../../helpers/buildApiClient';
-import Cookies from 'cookies';
 import requireAuth from '../../helpers/requireAuth';
+import extractSessionToken from '../../helpers/extractSessionToken';
 
 function NewSurveyPage(props) {
   const [subject, setSubject] = useState('');
@@ -16,6 +16,7 @@ function NewSurveyPage(props) {
     const res = await client.post('/api/dummy');
     console.log(res.data);
   };
+  console.log(props);
 
   return (
     <div className="flex justify-center">
@@ -34,7 +35,7 @@ function NewSurveyPage(props) {
                   onMouseLeave={() => setShowInfo('')}
                 />
                 {showInfo === 'title' && (
-                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs sm:left-1/2 md:left-0">
+                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs sm:left-1 md:left-0">
                     <div className="bg-white border shadow-md p-4 rounded-md">
                       Recipients cannot see the survey title on their email. You
                       can write something meaningful here.
@@ -94,10 +95,8 @@ function NewSurveyPage(props) {
 
 export async function getServerSideProps(ctx) {
   requireAuth(ctx);
+  const token = extractSessionToken(ctx);
 
-  const { req, res } = ctx;
-  const cookies = new Cookies(req, res);
-  const token = cookies.get(process.env.SESSION_COOKIE_NAME);
   return {
     props: {
       token,
