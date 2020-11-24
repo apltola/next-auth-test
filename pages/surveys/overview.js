@@ -1,11 +1,10 @@
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
-import jwt from 'next-auth/jwt';
 import axios from 'axios';
 import Cookies from 'cookies';
 
-export default function SurveyOverview({ token, surveys }) {
+export default function SurveyOverview({ surveys }) {
   const [session, loading] = useSession();
   const router = useRouter();
 
@@ -18,7 +17,6 @@ export default function SurveyOverview({ token, surveys }) {
   return (
     <div>
       <h1>overview page</h1>
-      <div>token: {JSON.stringify(token, null, 2)}</div>
       <div>surveys.length = {surveys.length}</div>
     </div>
   );
@@ -26,32 +24,21 @@ export default function SurveyOverview({ token, surveys }) {
 
 export async function getServerSideProps(ctx) {
   const { req, res } = ctx;
-  const token = await jwt.getToken({ req, secret: process.env.JWT_SECRET });
   const cookies = new Cookies(req, res);
-  /* const cookieName =
-    process.env.NODE_ENV === 'production'
-      ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token'; */
-  const token2 = cookies.get(process.env.SESSION_COOKIE_NAME);
-  console.log('sessiontoken --> ', token2);
-  console.log('process.env.NODE_ENV --> ', process.env.NODE_ENV);
-  console.log(
-    'process.env.SESSION_COOKIE_NAME --> ',
-    process.env.SESSION_COOKIE_NAME
-  );
+  const token = cookies.get(process.env.SESSION_COOKIE_NAME);
 
   let surveys = [];
-  if (token2) {
+  if (token) {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`;
     const res = await axios.get(url, {
       headers: {
-        Authorization: `Bearer: ${token2}`,
+        Authorization: `Bearer: ${token}`,
       },
     });
     surveys = res.data;
   }
 
   return {
-    props: { token, surveys },
+    props: { surveys },
   };
 }
