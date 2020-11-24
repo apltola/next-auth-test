@@ -27,7 +27,7 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
     e.preventDefault();
     setPasswordConflict(false);
 
-    if (password !== confirmPassword) {
+    if (method === 'signup' && password !== confirmPassword) {
       return setPasswordConflict(true);
     }
 
