@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import jwt from 'next-auth/jwt';
 import axios from 'axios';
+import Cookies from 'cookies';
 
 export default function SurveyOverview({ token, surveys }) {
   const [session, loading] = useSession();
@@ -24,16 +25,18 @@ export default function SurveyOverview({ token, surveys }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const { req } = ctx;
-  //const secret = process.env.JWT_SECRET;
+  const { req, res } = ctx;
   const token = await jwt.getToken({ req, secret: process.env.JWT_SECRET });
-  console.log('keksi --> ', req.headers);
+  const cookies = new Cookies(req, res);
+  const token2 = cookies.get('next-auth.session-token');
+  console.log('sessiontoken --> ', token2);
+
   let surveys = [];
-  if (token) {
+  if (token2) {
     const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`;
     const res = await axios.get(url, {
       headers: {
-        cookie: req.headers.cookie,
+        Authorization: `Bearer: ${token2}`,
       },
     });
     surveys = res.data;
