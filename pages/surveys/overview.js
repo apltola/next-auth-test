@@ -1,19 +1,8 @@
-import { useSession } from 'next-auth/client';
-import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
-import axios from 'axios';
-import Cookies from 'cookies';
+import extractSessionToken from '../../helpers/extractSessionToken';
+import requireAuth from '../../helpers/requireAuth';
+import buildApiClient from '../../helpers/buildApiClient';
 
 export default function SurveyOverview({ surveys }) {
-  const [session, loading] = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session && !loading) {
-      router.push('/');
-    }
-  }, [session, loading]);
-
   return (
     <div>
       <h1>overview page</h1>
@@ -23,18 +12,13 @@ export default function SurveyOverview({ surveys }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const { req, res } = ctx;
-  const cookies = new Cookies(req, res);
-  const token = cookies.get(process.env.SESSION_COOKIE_NAME);
+  requireAuth(ctx);
+  const token = extractSessionToken(ctx);
 
   let surveys = [];
   if (token) {
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`;
-    const res = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer: ${token}`,
-      },
-    });
+    const client = buildApiClient(token);
+    const res = await client.get('/api/surveys');
     surveys = res.data;
   }
 
