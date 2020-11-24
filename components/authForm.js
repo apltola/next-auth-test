@@ -6,6 +6,7 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const usernameInput = useRef();
+  const [passwordConflict, setPasswordConflict] = useState(false);
 
   useEffect(() => {
     if (usernameInput.current) {
@@ -17,13 +18,25 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
     if (method === 'signin') {
       return !username || !password;
     } else {
-      return !username || !password || !confirmPassword;
+      const fieldIsEmpty = !username || !password || !confirmPassword;
+      return fieldIsEmpty;
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setPasswordConflict(false);
+
+    if (password !== confirmPassword) {
+      return setPasswordConflict(true);
+    }
+
+    return onSubmit(e, username, password);
   };
 
   return (
     <div>
-      <form onSubmit={(e) => onSubmit(e, username, password)}>
+      <form onSubmit={handleSubmit}>
         <input name="csrfToken" type="hidden" defaultValue={token} />
         <div className="pt-6">
           <label className="block pb-1" htmlFor="username">
@@ -83,6 +96,11 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
             </a>
           </Link>
         </div>
+        {passwordConflict && (
+          <div className="text-center text-red-500 pt-4">
+            Your passwords don't match
+          </div>
+        )}
       </form>
     </div>
   );

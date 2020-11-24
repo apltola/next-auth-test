@@ -28,13 +28,17 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx;
   const token = await jwt.getToken({ req, secret: process.env.JWT_SECRET });
   const cookies = new Cookies(req, res);
-  const cookieName =
+  /* const cookieName =
     process.env.NODE_ENV === 'production'
       ? '__Secure-next-auth.session-token'
-      : 'next-auth.session-token';
-  const token2 = cookies.get(cookieName);
+      : 'next-auth.session-token'; */
+  const token2 = cookies.get(process.env.SESSION_COOKIE_NAME);
   console.log('sessiontoken --> ', token2);
   console.log('process.env.NODE_ENV --> ', process.env.NODE_ENV);
+  console.log(
+    'process.env.SESSION_COOKIE_NAME --> ',
+    process.env.SESSION_COOKIE_NAME
+  );
 
   let surveys = [];
   if (token2) {
