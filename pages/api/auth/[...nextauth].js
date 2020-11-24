@@ -16,7 +16,6 @@ const options = {
       },
       authorize: async (credentials) => {
         console.log('credentials --> ', credentials);
-        //const user = { id: 1, name: 'allu', email: 'allu@gmail.com' };
         try {
           const { data } = await axios.post(
             `https://surveys-api-5xzb7.ondigitalocean.app/api/auth/${credentials.method}2`,

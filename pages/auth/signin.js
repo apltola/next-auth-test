@@ -1,5 +1,4 @@
 import { csrfToken, signIn } from 'next-auth/client';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import AuthForm from '../../components/authForm';
 
@@ -8,6 +7,7 @@ export default function SigninPage({ csrfToken }) {
 
   const onSubmit = async (e, username, password) => {
     e.preventDefault();
+
     await signIn('credentials', {
       username,
       password,
@@ -27,7 +27,9 @@ export default function SigninPage({ csrfToken }) {
           token={csrfToken}
           btnText="Sign in"
         />
-        <div className="text-red-500 pt-4">{router.query.error}</div>
+        <div className="text-red-500 pt-4 text-center">
+          {router.query.error}
+        </div>
       </div>
     </div>
   );

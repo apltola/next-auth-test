@@ -1,5 +1,4 @@
 import { csrfToken, signIn } from 'next-auth/client';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import AuthForm from '../../components/authForm';
 export default function SignupPage({ csrfToken }) {
@@ -20,7 +19,9 @@ export default function SignupPage({ csrfToken }) {
   return (
     <div className="flex justify-center">
       <div>
-        <h1 className="text-3xl font-bold">Sign up with new account</h1>
+        <h1 className="text-3xl font-bold text-center">
+          Sign up with new account
+        </h1>
         <AuthForm
           onSubmit={onSubmit}
           method="signup"

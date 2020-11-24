@@ -5,17 +5,6 @@ import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut, useSession } from 'next-auth/client';
 
-const mobileLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/auth/signin', label: 'Sign In' },
-  { href: '/auth/signup', label: 'Sign Up' },
-];
-
-/* const authenticationLinks = [
-  { href: '/auth/signin', label: 'Sign In'},
-  { href: '/auth/signUp', label: 'Sign Up'},
-] */
-
 export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSurveyMenu, setshowSurveyMenu] = useState(false);
@@ -24,34 +13,20 @@ export default function Header() {
   const isAuthPage =
     router.pathname === '/auth/signin' || router.pathname === '/auth/signup';
 
-  const renderMobileLinks = () => {
-    return (
-      <ul className="text-center">
-        {mobileLinks.map((link) => {
-          return (
-            <li key={link.label} className="p-2 m-2">
-              <Link href={link.href}>
-                <button onClick={() => setShowMobileMenu(false)}>
-                  <a className="text-white text-center text-lg">{link.label}</a>
-                </button>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  };
+  const closeMenu = () => setShowMobileMenu(false);
 
   return (
     <header className="relative bg-gray-900">
       <div className="px-4 sm:px-6">
         <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
           <div className="py-1">
-            <Link href="/">
-              <a className="text-gray-300 hover:text-white text-xl font-medium">
-                YES|NO Surveys
-              </a>
-            </Link>
+            <button onClick={closeMenu}>
+              <Link href="/">
+                <a className="text-gray-300 hover:text-white text-xl font-black">
+                  YES|NO Surveys
+                </a>
+              </Link>
+            </button>
           </div>
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             {!isAuthPage && !session && (
@@ -83,7 +58,7 @@ export default function Header() {
                     {showSurveyMenu && (
                       <div className="absolute top-0 -ml-4 transform px-0 w-screen max-w-sm sm:px-0 sm:ml-0 sm:left-1/2 sm:-translate-x-1/2">
                         <div className="p-2 mt-3 bg-white text-gray-900 shadow-md rounded-lg">
-                          <div className="p-4 hover:bg-gray-100 rounded-lg p-4">
+                          <div className="p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg p-4">
                             <Link href="/surveys/overview">
                               <a>
                                 <FontAwesomeIcon icon="poll" className="mr-4" />
@@ -91,7 +66,7 @@ export default function Header() {
                               </a>
                             </Link>
                           </div>
-                          <div className="p-4 hover:bg-gray-100 rounded-lg p-4">
+                          <div className="p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg p-4">
                             <Link href="/surveys/new">
                               <a>
                                 <FontAwesomeIcon
@@ -123,7 +98,8 @@ export default function Header() {
               className="text-white"
               onClick={() => setShowMobileMenu(!showMobileMenu)}
             >
-              <FontAwesomeIcon icon="bars" size="lg" />
+              {showMobileMenu && <FontAwesomeIcon icon="times" size="2x" />}
+              {!showMobileMenu && <FontAwesomeIcon icon="bars" size="2x" />}
             </button>
           </div>
         </div>
@@ -132,14 +108,74 @@ export default function Header() {
       {showMobileMenu && (
         <div
           style={{ opacity: '.95' }}
-          className="absolute top-0 inset-x-0 py-6 px-6 md:hidden bg-gray-900 text-white"
+          className="absolute top-1 inset-x-0 py-8 px-8 md:hidden bg-gray-900 text-white"
         >
-          <div className="text-right">
-            <button onClick={() => setShowMobileMenu(false)}>
-              <FontAwesomeIcon icon="times" size="2x" />
-            </button>
+          <div className="flex flex-col items-center">
+            {!session && (
+              <div className="flex flex-col items-start">
+                <Link href="/auth/signin">
+                  <button onClick={closeMenu}>
+                    <a className="text-white text-center text-lg font-bold">
+                      <FontAwesomeIcon
+                        icon="sign-in-alt"
+                        className="mr-6"
+                        size="lg"
+                      />
+                      Sign in
+                    </a>
+                  </button>
+                </Link>
+                <Link href="/auth/signup">
+                  <button onClick={closeMenu} className="mt-6">
+                    <a className="text-white text-center text-lg font-bold">
+                      <FontAwesomeIcon
+                        icon="user-plus"
+                        className="mr-4"
+                        size="lg"
+                      />
+                      Sign up
+                    </a>
+                  </button>
+                </Link>
+              </div>
+            )}
+            {session && (
+              <div className="flex flex-col items-start">
+                <Link href="/surveys/overview">
+                  <button onClick={closeMenu}>
+                    <a className="text-white text-center text-lg font-bold">
+                      <FontAwesomeIcon icon="poll" className="mr-4" size="lg" />
+                      Surveys overview
+                    </a>
+                  </button>
+                </Link>
+                <Link href="/surveys/new">
+                  <button onClick={closeMenu} className="mt-6">
+                    <a className="text-white text-center text-lg font-bold">
+                      <FontAwesomeIcon
+                        icon="plus-square"
+                        className="mr-4"
+                        size="lg"
+                      />
+                      New survey
+                    </a>
+                  </button>
+                </Link>
+                <Link href="/auth/signup">
+                  <button onClick={signOut} className="mt-6">
+                    <a className="text-white text-center text-lg font-bold">
+                      <FontAwesomeIcon
+                        icon="sign-out-alt"
+                        className="mr-4"
+                        size="lg"
+                      />
+                      Logout
+                    </a>
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
-          <div>{renderMobileLinks()}</div>
         </div>
       )}
     </header>

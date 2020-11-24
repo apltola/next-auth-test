@@ -9,6 +9,7 @@ import {
   faBars,
   faCaretDown,
   faCoffee,
+  faHome,
   faPlusSquare,
   faPoll,
   faSignInAlt,
@@ -27,7 +28,8 @@ library.add(
   faSignInAlt,
   faUserPlus,
   faPoll,
-  faPlusSquare
+  faPlusSquare,
+  faHome
 );
 
 function MyApp({ Component, pageProps }) {
