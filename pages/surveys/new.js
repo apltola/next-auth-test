@@ -1,23 +1,26 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import axios from 'axios';
+import buildApiClient from '../../helpers/buildApiClient';
+import Cookies from 'cookies';
+import requireAuth from '../../helpers/requireAuth';
 
-export default function NewSurveyPage() {
+function NewSurveyPage(props) {
   const [subject, setSubject] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [recipients, setRecipients] = useState('');
   const [showInfo, setShowInfo] = useState('');
 
-  /* const onSubmit = async (e) => {
-    e.preventDefault();
-    const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`
-    const res = await axios.post()
-  } */
+  const ping = async () => {
+    const client = buildApiClient(props.token);
+    const res = await client.post('/api/dummy');
+    console.log(res.data);
+  };
 
   return (
     <div className="flex justify-center">
       <div className="flex-1 max-w-md">
+        <button onClick={ping}>ping api</button>
         <h1 className="text-3xl font-bold">Create new survey</h1>
         <form>
           <div className="pt-6">
@@ -31,7 +34,7 @@ export default function NewSurveyPage() {
                   onMouseLeave={() => setShowInfo('')}
                 />
                 {showInfo === 'title' && (
-                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs sm:left-0">
+                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs sm:left-1/2 md:left-0">
                     <div className="bg-white border shadow-md p-4 rounded-md">
                       Recipients cannot see the survey title on their email. You
                       can write something meaningful here.
@@ -88,3 +91,18 @@ export default function NewSurveyPage() {
     </div>
   );
 }
+
+export async function getServerSideProps(ctx) {
+  requireAuth(ctx);
+
+  const { req, res } = ctx;
+  const cookies = new Cookies(req, res);
+  const token = cookies.get(process.env.SESSION_COOKIE_NAME);
+  return {
+    props: {
+      token,
+    },
+  };
+}
+
+export default NewSurveyPage;
