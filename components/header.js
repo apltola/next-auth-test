@@ -57,17 +57,23 @@ export default function Header() {
                   <div className="relative">
                     {showSurveyMenu && (
                       <div className="absolute top-0 -ml-4 transform px-0 w-screen max-w-sm sm:px-0 sm:ml-0 sm:left-1/2 sm:-translate-x-1/2">
-                        <div className="p-2 mt-3 bg-white text-gray-900 shadow-md rounded-lg">
-                          <div className="p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg p-4">
-                            <Link href="/surveys/overview">
+                        <div className="flex flex-col p-2 mt-3 bg-white text-gray-900 shadow-md rounded-lg">
+                          <Link href="/surveys/overview">
+                            <button
+                              onClick={() => setshowSurveyMenu(false)}
+                              className="text-left p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
+                            >
                               <a>
                                 <FontAwesomeIcon icon="poll" className="mr-4" />
                                 Overview
                               </a>
-                            </Link>
-                          </div>
-                          <div className="p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg p-4">
-                            <Link href="/surveys/new">
+                            </button>
+                          </Link>
+                          <Link href="/surveys/new">
+                            <button
+                              onClick={() => setshowSurveyMenu(false)}
+                              className="text-left p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
+                            >
                               <a>
                                 <FontAwesomeIcon
                                   icon="plus-square"
@@ -75,8 +81,8 @@ export default function Header() {
                                 />
                                 New Survey
                               </a>
-                            </Link>
-                          </div>
+                            </button>
+                          </Link>
                         </div>
                       </div>
                     )}
@@ -108,7 +114,7 @@ export default function Header() {
       {showMobileMenu && (
         <div
           style={{ opacity: '.95' }}
-          className="absolute top-1 inset-x-0 py-8 px-8 md:hidden bg-gray-900 text-white"
+          className="absolute top-1 inset-x-0 pt-2 pb-8 md:hidden bg-gray-900 text-white"
         >
           <div className="flex flex-col items-center">
             {!session && (
