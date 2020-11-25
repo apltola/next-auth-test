@@ -7,11 +7,10 @@ import { Provider as SurveyProvider } from '../context/surveyContext';
 import { Router } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   faBars,
   faCaretDown,
-  faCoffee,
+  faEnvelope,
   faExclamationCircle,
   faHome,
   faInfoCircle,
@@ -25,8 +24,6 @@ import {
 import Layout from '../components/layout';
 
 library.add(
-  fab,
-  faCoffee,
   faBars,
   faTimes,
   faCaretDown,
@@ -37,7 +34,8 @@ library.add(
   faPlusSquare,
   faHome,
   faInfoCircle,
-  faExclamationCircle
+  faExclamationCircle,
+  faEnvelope
 );
 
 function MyApp({ Component, pageProps }) {

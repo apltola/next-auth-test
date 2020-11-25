@@ -54,10 +54,10 @@ function NewSurveyPage() {
                   onMouseLeave={() => setShowInfo('')}
                 />
                 {showInfo === 'title' && (
-                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-1">
+                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-0 -ml-10">
                     <div className="bg-white border shadow-md p-4 rounded-md">
-                      Recipients cannot see the title on their email. You can
-                      write something meaningful here.
+                      Recipients cannot see the campaign title on their email.
+                      You can write something meaningful here.
                     </div>
                   </div>
                 )}
@@ -90,6 +90,8 @@ function NewSurveyPage() {
             <textarea
               className="w-full px-2 py-1 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:border-ultramarine-1"
               name="subject"
+              rows={6}
+              cols={40}
               value={body}
               onChange={(e) => setBody(e.target.value)}
             />
