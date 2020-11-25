@@ -1,14 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { Context as SurveyContext } from '../../context/surveyContext';
 import buildApiClient from '../../helpers/buildApiClient';
 import extractSessionToken from '../../helpers/extractSessionToken';
 import requireAuth from '../../helpers/requireAuth';
+
 //import axios from 'axios';
 
 export default function SurveyReviewPage({ token }) {
-  const { state } = useContext(SurveyContext);
+  const { state, resetData } = useContext(SurveyContext);
+  const router = useRouter();
 
   const handleSendSurvey = async () => {
     try {
@@ -19,7 +22,9 @@ export default function SurveyReviewPage({ token }) {
         { ...state },
         {headers: {Authorization: `Bearer ${token}`,},}
       ); */
-      console.log('jee? -> ', res.data);
+      console.log(res.data);
+      router.push('/surveys/overview');
+      resetData();
     } catch (error) {
       console.log(error);
     }
@@ -31,10 +36,11 @@ export default function SurveyReviewPage({ token }) {
         <h1 className="text-2xl md:text-3xl font-bold">
           Please confirm your survey
         </h1>
+        <h2 className="pt-4">Your email will look roughly like this</h2>
         {/* <div>{JSON.stringify(state, null, 2)}</div>
         <div>token: {token}</div> */}
-        <div className="mt-6 mb-6 border rounded-md shadow-sm">
-          <div className="bg-gray-200 p-2">
+        <div className="mt-8 mb-6 border rounded-md shadow-sm">
+          <div className="bg-gray-200 py-2 px-4">
             <div>subject: {state.subject}</div>
             <div className="text-sm overflow-x-scroll pb-4 pt-2">
               recipients: {state.recipients}
@@ -45,13 +51,13 @@ export default function SurveyReviewPage({ token }) {
               <div className="whitespace-pre">{`${state.body}`}</div>
               <div className="pt-4">
                 <button
-                  className="border border-gray-500 px-4 py-1 rounded-md m-2"
+                  className="border border-gray-500 px-4 py-1 rounded-md m-2 cursor-default"
                   disabled
                 >
                   <span>Yes</span> 👍
                 </button>
                 <button
-                  className="border border-gray-500 px-4 py-1 rounded-md m-2"
+                  className="border border-gray-500 px-4 py-1 rounded-md m-2 cursor-default"
                   disabled
                 >
                   <span>No</span> 👎

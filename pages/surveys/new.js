@@ -40,7 +40,6 @@ function NewSurveyPage() {
   return (
     <div className="flex justify-center">
       <div className="flex-1 max-w-md">
-        {/* <button onClick={ping}>ping api</button> */}
         <h1 className="text-3xl font-bold">Create new survey</h1>
         <form onSubmit={onSubmit}>
           <div className="pt-6">
@@ -54,7 +53,7 @@ function NewSurveyPage() {
                   onMouseLeave={() => setShowInfo('')}
                 />
                 {showInfo === 'title' && (
-                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-0 -ml-10">
+                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-0 -ml-20">
                     <div className="bg-white border shadow-md p-4 rounded-md">
                       Recipients cannot see the campaign title on their email.
                       You can write something meaningful here.

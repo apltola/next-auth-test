@@ -12,6 +12,9 @@ function surveyReducer(state, action) {
     case 'SET_SURVEY_DATA':
       return { ...state, ...action.payload };
 
+    case 'RESET':
+      return initialState;
+
     default:
       return state;
   }
@@ -23,8 +26,15 @@ function setSurveyData(dispatch) {
   };
 }
 
+function resetData(dispatch) {
+  return function () {
+    console.log('reset??');
+    dispatch({ type: 'RESET' });
+  };
+}
+
 export const { Context, Provider } = buildContext(
   surveyReducer,
-  { setSurveyData },
+  { setSurveyData, resetData },
   initialState
 );

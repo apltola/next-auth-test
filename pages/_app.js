@@ -10,6 +10,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faBars,
   faCaretDown,
+  faCircle,
   faEnvelope,
   faExclamationCircle,
   faHome,
@@ -35,7 +36,8 @@ library.add(
   faHome,
   faInfoCircle,
   faExclamationCircle,
-  faEnvelope
+  faEnvelope,
+  faCircle
 );
 
 function MyApp({ Component, pageProps }) {

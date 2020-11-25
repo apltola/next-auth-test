@@ -7,7 +7,10 @@ export default function Layout({ children }) {
   return (
     <div style={{ minHeight: '100vh' }} className="flex flex-col">
       <Header />
-      <main className="py-20 pl-4 pr-4 pb-20 w-screen max-w-screen-xl mx-auto flex-grow">
+      <main
+        style={{ maxWidth: '1600px' }}
+        className="py-20 pl-4 pr-4 pb-20 w-screen mx-auto flex-grow"
+      >
         {children}
       </main>
       <footer className="p-8 border text-center text-gray-500">
