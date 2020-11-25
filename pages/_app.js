@@ -2,16 +2,17 @@ import React from 'react';
 import '../styles/index.css';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import { Provider } from 'next-auth/client';
+import { Provider as AuthProvider } from 'next-auth/client';
+import { Provider as SurveyProvider } from '../context/surveyContext';
+import { Router } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
-import { Router } from 'next/router';
-import Layout from '../components/layout';
 import {
   faBars,
   faCaretDown,
   faCoffee,
+  faExclamationCircle,
   faHome,
   faInfoCircle,
   faPlusSquare,
@@ -21,6 +22,7 @@ import {
   faTimes,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
+import Layout from '../components/layout';
 
 library.add(
   fab,
@@ -34,7 +36,8 @@ library.add(
   faPoll,
   faPlusSquare,
   faHome,
-  faInfoCircle
+  faInfoCircle,
+  faExclamationCircle
 );
 
 function MyApp({ Component, pageProps }) {
@@ -47,13 +50,15 @@ function MyApp({ Component, pageProps }) {
     <React.Fragment>
       <NextSeo
         title="Yes|No Surveys"
-        description="Collect feedback with yes|no questions"
+        description="Collect feedback with yes/no questions"
       />
-      <Provider session={pageProps.session}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </Provider>
+      <AuthProvider session={pageProps.session}>
+        <SurveyProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SurveyProvider>
+      </AuthProvider>
     </React.Fragment>
   );
 }

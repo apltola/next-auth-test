@@ -24,7 +24,6 @@ const options = {
               password: credentials.password,
             }
           );
-          console.log('res.data -> ', data);
           const user = { id: data.id, name: data.username, email: null };
           return Promise.resolve(user);
         } catch (error) {
