@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
+import DotLoader from 'react-spinners/PulseLoader';
 
 export default function AuthForm({ method, token, btnText, onSubmit }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const usernameInput = useRef();
   const [passwordConflict, setPasswordConflict] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const usernameInput = useRef();
 
   useEffect(() => {
     if (usernameInput.current) {
@@ -24,10 +26,12 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     setPasswordConflict(false);
 
     if (method === 'signup' && password !== confirmPassword) {
+      setLoading(false);
       return setPasswordConflict(true);
     }
 
@@ -76,12 +80,16 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
         )}
         <div className="flex justify-center">
           <button
-            className="mt-6 w-full border-transparent text-sm text-white font-medium py-2 px-10 bg-ultramarine-1 hover:bg-ultramarine-2 rounded-md"
+            className="flex items-center justify-center mt-6 w-full border-transparent text-sm text-white font-medium py-2 px-10 bg-ultramarine-1 hover:bg-ultramarine-2 rounded-md"
             type="submit"
             disabled={isDisabled()}
             style={{ cursor: isDisabled() ? 'not-allowed' : 'pointer' }}
           >
-            {btnText}
+            {loading ? (
+              <DotLoader loading={loading} size={10} color="white" />
+            ) : (
+              btnText
+            )}
           </button>
         </div>
         <div className="text-center pt-4 text-gray-600">
