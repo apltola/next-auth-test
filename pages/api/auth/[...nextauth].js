@@ -19,7 +19,7 @@ const options = {
         console.log('credentials -> ', credentials);
         try {
           const { data } = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/${credentials.method}2`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/${credentials.method}`,
             {
               username: credentials.username,
               password: credentials.password,
