@@ -28,7 +28,6 @@ function setSurveyData(dispatch) {
 
 function resetData(dispatch) {
   return function () {
-    console.log('reset??');
     dispatch({ type: 'RESET' });
   };
 }

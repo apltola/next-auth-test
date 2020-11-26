@@ -3,12 +3,12 @@ import requireAuth from '../../helpers/requireAuth';
 import buildApiClient from '../../helpers/buildApiClient';
 import SurveyGrid from '../../components/surveyGrid';
 
-export default function SurveyOverview({ surveys, error }) {
+export default function SurveyOverview({ surveys, error, token }) {
   return (
-    <div className="">
+    <div>
       <div className="text-center text-red-500 font-bold">{error}</div>
       <h1 className="text-3xl font-bold text-center">Your surveys</h1>
-      <SurveyGrid surveys={surveys} />
+      <SurveyGrid surveys={surveys} sessionToken={token} />
     </div>
   );
 }
@@ -30,6 +30,6 @@ export async function getServerSideProps(ctx) {
   }
 
   return {
-    props: { surveys, error },
+    props: { surveys, error, token },
   };
 }

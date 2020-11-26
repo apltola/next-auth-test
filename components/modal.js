@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Modal({ show, close, title, body, btnText }) {
+export default function Modal({ show, close, title, body, btnText, submit }) {
   if (!show) {
     return null;
   }
@@ -57,6 +57,7 @@ export default function Modal({ show, close, title, body, btnText }) {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button
+              onClick={submit}
               type="button"
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
             >

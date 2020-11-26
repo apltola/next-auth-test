@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import buildApiClient from '../helpers/buildApiClient';
 import Modal from './modal';
 import SurveyCardChart from './surveyCardChart';
 
-export default function SurveyCard({ survey }) {
+export default function SurveyCard({ survey, sessionToken }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const {
     title,
     dateSent,
@@ -14,14 +15,22 @@ export default function SurveyCard({ survey }) {
     subject,
     body,
     recipientsAmount,
-    lastResponded,
+    id,
   } = survey;
+  const router = useRouter();
 
   const openModal = () => setShowDeleteModal(true);
   const closeModal = () => setShowDeleteModal(false);
   const modalTitle = `Delete survey ${title}`;
   const modalBody = `Are you sure you want to delete survey ${title}? It will be permanently removed.`;
   const modalButtonText = 'Delete';
+
+  const deleteSurvey = async () => {
+    const client = buildApiClient(sessionToken);
+    await client.delete(`/api/surveys/${id}`);
+    closeModal();
+    router.push('/surveys/overview');
+  };
 
   const votesAmount = yes + no;
   const hasVotes = votesAmount > 0;
@@ -32,7 +41,7 @@ export default function SurveyCard({ survey }) {
       className="flex flex-col bg-white shadow rounded-lg border border-gray-100 w-full md:w-1/3 lg:w-1/4 mb-10 md:my-6 md:mx-6"
     >
       <header className="p-4 border-b border-gray-200 flex justify-between items-center">
-        <h1 className="text-lg font-bold">{title}</h1>
+        <h1 className="text-lg font-bold pr-4">{title}</h1>
         <span className="text-xs">{new Date(dateSent).toDateString()}</span>
       </header>
       <div className="flex-1 p-6 flex justify-center">
@@ -92,6 +101,7 @@ export default function SurveyCard({ survey }) {
         title={modalTitle}
         body={modalBody}
         btnText={modalButtonText}
+        submit={deleteSurvey}
       />
     </article>
   );
