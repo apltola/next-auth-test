@@ -4,7 +4,7 @@ import Modal from './modal';
 import SurveyCardChart from './surveyCardChart';
 
 export default function SurveyCard({ survey }) {
-  const [showDeleteModal, setShowDeleteModal] = useState(true);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const {
     title,
