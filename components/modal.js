@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export default function Modal({ show, close, title, body, btnText, submit }) {
   if (!show) {
     return null;

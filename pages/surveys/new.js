@@ -116,7 +116,7 @@ function NewSurveyPage() {
               <span className="relative ml-2">
                 {getInfoIcon('recipients')}
                 {showInfo === 'recipients' && (
-                  <InfoOverlay text="Comma separated email addresses of recipients" />
+                  <InfoOverlay text="Comma separated email addresses of recipients." />
                 )}
               </span>
             </label>

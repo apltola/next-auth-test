@@ -23,7 +23,7 @@ import {
   faTrashAlt,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
-import Layout from '../components/layout';
+import Layout from '../components/appLayout';
 
 library.add(
   faBars,

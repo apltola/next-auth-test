@@ -4,16 +4,23 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut, useSession } from 'next-auth/client';
+import MobileMenu from './mobileMenu';
+import ErrorBanner from './errorBanner';
 
 export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSurveyMenu, setshowSurveyMenu] = useState(false);
-  const router = useRouter();
+  const [showErrorBanner, setShowErrorBanner] = useState(true);
   const [session, loading] = useSession();
+  const router = useRouter();
+
   const isAuthPage =
     router.pathname === '/auth/signin' || router.pathname === '/auth/signup';
 
   const closeMenu = () => setShowMobileMenu(false);
+  const closeBanner = () => setShowErrorBanner(false);
+
+  const isAuthenticated = session && !loading;
 
   return (
     <header className="relative bg-gray-900">
@@ -29,7 +36,7 @@ export default function Header() {
             </button>
           </div>
           <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            {!isAuthPage && !session && (
+            {!isAuthPage && !isAuthenticated && (
               <React.Fragment>
                 <Link href="/auth/signin">
                   <a className="whitespace-nowrap text-base font-medium text-gray-300 hover:text-white">
@@ -43,7 +50,7 @@ export default function Header() {
                 </Link>
               </React.Fragment>
             )}
-            {session && (
+            {isAuthenticated && (
               <React.Fragment>
                 <div
                   className="relative text-white cursor-pointer"
@@ -56,7 +63,7 @@ export default function Header() {
                   </div>
                   <div className="relative">
                     {showSurveyMenu && (
-                      <div className="absolute top-0 -ml-4 transform px-0 w-screen max-w-sm sm:px-0 sm:ml-0 sm:left-1/2 sm:-translate-x-1/2">
+                      <div className="absolute z-10 top-0 -ml-4 transform px-0 w-screen max-w-sm sm:px-0 sm:ml-0 sm:left-1/2 sm:-translate-x-1/2">
                         <div className="flex flex-col p-2 mt-3 bg-white text-gray-900 shadow-md rounded-lg">
                           <Link href="/surveys/overview">
                             <button
@@ -110,80 +117,13 @@ export default function Header() {
           </div>
         </div>
       </div>
-
-      {showMobileMenu && (
-        <div
-          style={{ opacity: '.95' }}
-          className="absolute top-1 inset-x-0 pt-2 pb-8 md:hidden bg-gray-900 text-white z-50"
-        >
-          <div className="flex flex-col items-center">
-            {!session && (
-              <div className="flex flex-col items-start">
-                <Link href="/auth/signin">
-                  <button onClick={closeMenu}>
-                    <a className="text-white text-center text-lg font-bold">
-                      <FontAwesomeIcon
-                        icon="sign-in-alt"
-                        className="mr-6"
-                        size="lg"
-                      />
-                      Sign in
-                    </a>
-                  </button>
-                </Link>
-                <Link href="/auth/signup">
-                  <button onClick={closeMenu} className="mt-8">
-                    <a className="text-white text-center text-lg font-bold">
-                      <FontAwesomeIcon
-                        icon="user-plus"
-                        className="mr-4"
-                        size="lg"
-                      />
-                      Sign up
-                    </a>
-                  </button>
-                </Link>
-              </div>
-            )}
-            {session && (
-              <div className="flex flex-col items-start">
-                <Link href="/surveys/overview">
-                  <button onClick={closeMenu}>
-                    <a className="text-white text-center text-lg font-bold">
-                      <FontAwesomeIcon icon="poll" className="mr-4" size="lg" />
-                      Surveys overview
-                    </a>
-                  </button>
-                </Link>
-                <Link href="/surveys/new">
-                  <button onClick={closeMenu} className="mt-8">
-                    <a className="text-white text-center text-lg font-bold">
-                      <FontAwesomeIcon
-                        icon="plus-square"
-                        className="mr-4"
-                        size="lg"
-                      />
-                      New survey
-                    </a>
-                  </button>
-                </Link>
-                <Link href="/auth/signup">
-                  <button onClick={signOut} className="mt-8">
-                    <a className="text-white text-center text-lg font-bold">
-                      <FontAwesomeIcon
-                        icon="sign-out-alt"
-                        className="mr-4"
-                        size="lg"
-                      />
-                      Logout
-                    </a>
-                  </button>
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <MobileMenu
+        show={showMobileMenu}
+        session={session}
+        close={closeMenu}
+        signOut={signOut}
+      />
+      <ErrorBanner show={showErrorBanner} close={closeBanner} />
     </header>
   );
 }

@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/client';
 import Header from './header';
 
-export default function Layout({ children }) {
+export default function AppLayout({ children }) {
   const [session, loading] = useSession();
 
   return (
