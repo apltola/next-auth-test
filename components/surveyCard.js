@@ -1,7 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PieChart } from 'react-minimal-pie-chart';
+import { useState } from 'react';
+import Modal from './modal';
+import SurveyCardChart from './surveyCardChart';
 
 export default function SurveyCard({ survey }) {
+  const [showDeleteModal, setShowDeleteModal] = useState(true);
+
   const {
     title,
     dateSent,
@@ -12,38 +16,27 @@ export default function SurveyCard({ survey }) {
     recipientsAmount,
     lastResponded,
   } = survey;
+
+  const openModal = () => setShowDeleteModal(true);
+  const closeModal = () => setShowDeleteModal(false);
+  const modalTitle = `Delete survey ${title}`;
+  const modalBody = `Are you sure you want to delete survey ${title}? It will be permanently removed.`;
+  const modalButtonText = 'Delete';
+
   const votesAmount = yes + no;
-
   const hasVotes = votesAmount > 0;
-
-  const chartData = hasVotes
-    ? [
-        {
-          title: 'Yes',
-          value: yes,
-          color: '#0197F6',
-        },
-        { title: 'No', value: no, color: '#D7263D' },
-      ]
-    : [
-        {
-          title: 'empty',
-          value: 1,
-          color: '#9C9990',
-        },
-      ];
 
   return (
     <article
       //style={{ minWidth: '400px' }}
-      className="bg-white shadow rounded-lg border border-gray-100 w-full md:w-1/3 lg:w-1/4 mb-10 md:my-6 md:mx-6"
+      className="flex flex-col bg-white shadow rounded-lg border border-gray-100 w-full md:w-1/3 lg:w-1/4 mb-10 md:my-6 md:mx-6"
     >
       <header className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h1 className="text-lg font-bold">{title}</h1>
         <span className="text-xs">{new Date(dateSent).toDateString()}</span>
       </header>
-      <div className="p-6 flex justify-center">
-        <div>
+      <div className="flex-1 p-6 flex justify-center">
+        <div className="flex flex-col">
           <fieldset className="border px-4 py-2 mb-6">
             <legend className="text-sm font-medium">Recipients</legend>
             <div className="flex justify-evenly">
@@ -63,21 +56,7 @@ export default function SurveyCard({ survey }) {
             <div className="">{body}</div>
           </fieldset>
           <div className="pt-6 flex">
-            <PieChart
-              lineWidth={20}
-              data={chartData}
-              label={({ dataEntry }) => {
-                if (hasVotes) {
-                  return Math.round(dataEntry.percentage) + '%';
-                }
-              }}
-              labelStyle={{ fontSize: '8px', fill: 'black' }}
-              labelPosition={60}
-              style={{
-                height: '150px',
-                flex: '1.5',
-              }}
-            />
+            <SurveyCardChart hasVotes={hasVotes} yes={yes} no={no} />
             <div className="flex-1 flex flex-col justify-center items-start">
               <div className="font-bold pl-4 py-1">
                 <FontAwesomeIcon
@@ -97,8 +76,23 @@ export default function SurveyCard({ survey }) {
               </div>
             </div>
           </div>
+          <div className="flex-1 flex justify-end items-end text-xl pt-2">
+            <button
+              onClick={openModal}
+              className="text-red-500 hover:text-red-600 active:text-red-700 focus:text-red-600 focus:outline-none"
+            >
+              <FontAwesomeIcon icon="trash-alt" />
+            </button>
+          </div>
         </div>
       </div>
+      <Modal
+        show={showDeleteModal}
+        close={closeModal}
+        title={modalTitle}
+        body={modalBody}
+        btnText={modalButtonText}
+      />
     </article>
   );
 }

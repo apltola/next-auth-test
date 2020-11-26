@@ -53,7 +53,7 @@ function NewSurveyPage() {
                   onMouseLeave={() => setShowInfo('')}
                 />
                 {showInfo === 'title' && (
-                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-0 -ml-20">
+                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-0 -ml-30 md:-ml-10">
                     <div className="bg-white border shadow-md p-4 rounded-md">
                       Recipients cannot see the campaign title on their email.
                       You can write something meaningful here.

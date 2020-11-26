@@ -20,6 +20,7 @@ import {
   faSignInAlt,
   faSignOutAlt,
   faTimes,
+  faTrashAlt,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../components/layout';
@@ -37,7 +38,8 @@ library.add(
   faInfoCircle,
   faExclamationCircle,
   faEnvelope,
-  faCircle
+  faCircle,
+  faTrashAlt
 );
 
 function MyApp({ Component, pageProps }) {
