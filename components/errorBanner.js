@@ -1,5 +1,13 @@
+import { useContext } from 'react';
+import { Context } from '../context/errorContext';
+
 export default function ErrorBanner({ show, close }) {
-  if (!show) {
+  const {
+    state: { showErrorBanner, errorBannerText },
+    setShowBanner,
+  } = useContext(Context);
+
+  if (!showErrorBanner) {
     return null;
   }
 
@@ -15,7 +23,7 @@ export default function ErrorBanner({ show, close }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                ariaHidden="true"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -25,14 +33,13 @@ export default function ErrorBanner({ show, close }) {
                 />
               </svg>
             </span>
-            <p className="flex-1 ml-3 font-medium text-white truncate text-center">
-              <span className="md:hidden">Error!!!</span>
-              <span className="hidden md:inline">Error!!!!</span>
+            <p className="flex-1 ml-3 font-medium text-white text-left md:text-center">
+              <span>{errorBannerText}</span>
             </p>
           </div>
           <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
             <button
-              onClick={close}
+              onClick={() => setShowBanner(false, '')}
               type="button"
               className="-mr-1 flex p-2 rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
             >
@@ -43,7 +50,7 @@ export default function ErrorBanner({ show, close }) {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                ariaHidden="true"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"

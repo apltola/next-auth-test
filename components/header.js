@@ -10,17 +10,14 @@ import ErrorBanner from './errorBanner';
 export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showSurveyMenu, setshowSurveyMenu] = useState(false);
-  const [showErrorBanner, setShowErrorBanner] = useState(true);
   const [session, loading] = useSession();
   const router = useRouter();
 
+  const isAuthenticated = session && !loading;
   const isAuthPage =
     router.pathname === '/auth/signin' || router.pathname === '/auth/signup';
 
   const closeMenu = () => setShowMobileMenu(false);
-  const closeBanner = () => setShowErrorBanner(false);
-
-  const isAuthenticated = session && !loading;
 
   return (
     <header className="relative bg-gray-900">
@@ -123,7 +120,7 @@ export default function Header() {
         close={closeMenu}
         signOut={signOut}
       />
-      <ErrorBanner show={showErrorBanner} close={closeBanner} />
+      <ErrorBanner />
     </header>
   );
 }

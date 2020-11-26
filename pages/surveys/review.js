@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 import { Context as SurveyContext } from '../../context/surveyContext';
+import { Context as ErrorContext } from '../../context/errorContext';
 import buildApiClient from '../../helpers/buildApiClient';
 import extractSessionToken from '../../helpers/extractSessionToken';
 import requireAuth from '../../helpers/requireAuth';
@@ -10,6 +11,7 @@ import DotLoader from 'react-spinners/PulseLoader';
 
 export default function SurveyReviewPage({ token }) {
   const { state, resetData } = useContext(SurveyContext);
+  const { setShowBanner } = useContext(ErrorContext);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -17,12 +19,15 @@ export default function SurveyReviewPage({ token }) {
     setLoading(true);
     try {
       const client = buildApiClient(token);
-      const res = await client.post('/api/surveys', { ...state });
-      console.log(res.data);
+      await client.post('/api/surveys', { ...state });
       router.push('/surveys/overview');
       resetData();
     } catch (error) {
       setLoading(false);
+      setShowBanner(
+        true,
+        'Server error occurred during survey creation, please try again later'
+      );
       console.log(error);
     }
   };

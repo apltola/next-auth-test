@@ -4,6 +4,7 @@ import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { Provider as AuthProvider } from 'next-auth/client';
 import { Provider as SurveyProvider } from '../context/surveyContext';
+import { Provider as ErrorProvider } from '../context/errorContext';
 import { Router } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -56,9 +57,11 @@ function MyApp({ Component, pageProps }) {
       />
       <AuthProvider session={pageProps.session}>
         <SurveyProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <ErrorProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ErrorProvider>
         </SurveyProvider>
       </AuthProvider>
     </React.Fragment>
