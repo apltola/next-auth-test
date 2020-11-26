@@ -1,6 +1,7 @@
 import { csrfToken, signIn } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import AuthForm from '../../components/authForm';
+import ErrorMessage from '../../components/errorMessage';
 export default function SignupPage({ csrfToken }) {
   const router = useRouter();
 
@@ -28,9 +29,7 @@ export default function SignupPage({ csrfToken }) {
           token={csrfToken}
           btnText="Sign up"
         />
-        <div className="text-red-500 pt-4 text-center">
-          {router.query.error}
-        </div>
+        <ErrorMessage error={router.query.error} />
       </div>
     </div>
   );

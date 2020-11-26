@@ -3,6 +3,7 @@ import { Context as SurveyContext } from '../../context/surveyContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import requireAuth from '../../helpers/requireAuth';
+import validateEmails from '../../helpers/validateEmails';
 
 function InfoOverlay({ text }) {
   return (
@@ -40,6 +41,8 @@ function NewSurveyPage() {
 
     if (hasEmptyField()) {
       setError('All fields must be filled');
+    } else if (!validateEmails(recipients)) {
+      setError('Recipient email list has one or many invalid values');
     } else {
       router.push('/surveys/review');
     }

@@ -6,7 +6,7 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordConflict, setPasswordConflict] = useState(false);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const usernameInput = useRef();
 
@@ -26,13 +26,19 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
   };
 
   const handleSubmit = (e) => {
-    setLoading(true);
     e.preventDefault();
-    setPasswordConflict(false);
+    setLoading(true);
+    setError(false);
 
     if (method === 'signup' && password !== confirmPassword) {
       setLoading(false);
-      return setPasswordConflict(true);
+      return setError('Passwords are not matching');
+    } else if (username.length < 2 || username.length > 20) {
+      setLoading(false);
+      return setError('Username must be between 2-20 characters long');
+    } else if (password.length < 4) {
+      setLoading(false);
+      return setError('Password must be at least 4 characters long');
     }
 
     return onSubmit(e, username, password);
@@ -104,11 +110,7 @@ export default function AuthForm({ method, token, btnText, onSubmit }) {
             </a>
           </Link>
         </div>
-        {passwordConflict && (
-          <div className="text-center text-red-500 pt-4">
-            Your passwords don't match
-          </div>
-        )}
+        {error && <div className="text-center text-red-500 pt-4">{error}</div>}
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import axios from 'axios';
+import parseAuthError from '../../../helpers/parseAuthError';
 
 const options = {
   providers: [
@@ -27,12 +28,11 @@ const options = {
           const user = { id: data.id, name: data.username, email: null };
           return Promise.resolve(user);
         } catch (error) {
-          const msg =
-            credentials.method === 'signup'
-              ? 'Error occurred during sign up'
-              : 'Incorrect username or password';
+          const err = parseAuthError(error);
+          console.log('auth error ->', parseAuthError(error));
+
           return Promise.reject(
-            `${credentials.onErrorRedirect}?error=${encodeURIComponent(msg)}`
+            `${credentials.onErrorRedirect}?error=${encodeURIComponent(err)}`
           );
         }
       },
