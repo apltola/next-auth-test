@@ -15,10 +15,10 @@ const options = {
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
-        console.log('credentials --> ', credentials);
+        console.log('credentials -> ', credentials);
         try {
           const { data } = await axios.post(
-            `https://surveys-api-5xzb7.ondigitalocean.app/api/auth/${credentials.method}2`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/${credentials.method}2`,
             {
               username: credentials.username,
               password: credentials.password,
