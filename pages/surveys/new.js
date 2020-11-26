@@ -4,6 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import requireAuth from '../../helpers/requireAuth';
 
+function InfoOverlay({ text }) {
+  return (
+    <div className="absolute top-1 pt-2 w-screen max-w-xs left-0 -ml-20">
+      <div className="bg-white border shadow-md p-4 rounded-md">{text}</div>
+    </div>
+  );
+}
+
 function NewSurveyPage() {
   const { state, setSurveyData } = useContext(SurveyContext);
   const [title, setTitle] = useState(state.title);
@@ -37,6 +45,17 @@ function NewSurveyPage() {
     }
   };
 
+  const getInfoIcon = (input) => {
+    return (
+      <FontAwesomeIcon
+        icon="info-circle"
+        className="cursor-pointer"
+        onMouseEnter={() => setShowInfo(input)}
+        onMouseLeave={() => setShowInfo('')}
+      />
+    );
+  };
+
   return (
     <div className="flex justify-center">
       <div className="flex-1 max-w-md">
@@ -46,19 +65,9 @@ function NewSurveyPage() {
             <label className="block pb-1" htmlFor="title">
               Campaign Title
               <span className="relative ml-2">
-                <FontAwesomeIcon
-                  icon="info-circle"
-                  className="cursor-pointer"
-                  onMouseEnter={() => setShowInfo('title')}
-                  onMouseLeave={() => setShowInfo('')}
-                />
+                {getInfoIcon('title')}
                 {showInfo === 'title' && (
-                  <div className="absolute top-1 pt-2 transform w-screen max-w-xs left-0 -ml-30 md:-ml-10">
-                    <div className="bg-white border shadow-md p-4 rounded-md">
-                      Recipients cannot see the campaign title on their email.
-                      You can write something meaningful here.
-                    </div>
-                  </div>
+                  <InfoOverlay text="Recipients cannot see the campaign title on their email. You can write something meaningful here." />
                 )}
               </span>
             </label>
@@ -85,6 +94,12 @@ function NewSurveyPage() {
           <div className="pt-6">
             <label className="block pb-1" htmlFor="subject">
               Email Body
+              <span className="relative ml-2">
+                {getInfoIcon('body')}
+                {showInfo === 'body' && (
+                  <InfoOverlay text="The text that appears on the email. Body should end with an yes/no question. Answer buttons will be appended automatically." />
+                )}
+              </span>
             </label>
             <textarea
               className="w-full px-2 py-1 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:border-ultramarine-1"
@@ -98,6 +113,12 @@ function NewSurveyPage() {
           <div className="pt-6">
             <label className="block pb-1" htmlFor="subject">
               Recipient List
+              <span className="relative ml-2">
+                {getInfoIcon('recipients')}
+                {showInfo === 'recipients' && (
+                  <InfoOverlay text="Comma separated email addresses of recipients" />
+                )}
+              </span>
             </label>
             <input
               className="w-full px-2 py-1 border border-gray-300 rounded-sm shadow-sm focus:outline-none focus:border-ultramarine-1"
@@ -105,6 +126,7 @@ function NewSurveyPage() {
               name="subject"
               value={recipients}
               onChange={(e) => setRecipients(e.target.value)}
+              placeholder="johndoe@gmail.com,janesmith@aol.com"
             />
           </div>
           <div className="pt-6">
