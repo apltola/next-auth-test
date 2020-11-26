@@ -1,31 +1,28 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Context as SurveyContext } from '../../context/surveyContext';
 import buildApiClient from '../../helpers/buildApiClient';
 import extractSessionToken from '../../helpers/extractSessionToken';
 import requireAuth from '../../helpers/requireAuth';
-
-//import axios from 'axios';
+import DotLoader from 'react-spinners/PulseLoader';
 
 export default function SurveyReviewPage({ token }) {
   const { state, resetData } = useContext(SurveyContext);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSendSurvey = async () => {
+    setLoading(true);
     try {
       const client = buildApiClient(token);
       const res = await client.post('/api/surveys', { ...state });
-      /* const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/surveys`,
-        { ...state },
-        {headers: {Authorization: `Bearer ${token}`,},}
-      ); */
       console.log(res.data);
       router.push('/surveys/overview');
       resetData();
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -54,13 +51,13 @@ export default function SurveyReviewPage({ token }) {
                   className="border border-gray-500 px-4 py-1 rounded-md m-2 cursor-default"
                   disabled
                 >
-                  <span>Yes</span> 👍
+                  <span>Yes</span>
                 </button>
                 <button
                   className="border border-gray-500 px-4 py-1 rounded-md m-2 cursor-default"
                   disabled
                 >
-                  <span>No</span> 👎
+                  <span>No</span>
                 </button>
               </div>
               <div
@@ -73,13 +70,22 @@ export default function SurveyReviewPage({ token }) {
             </div>
           </div>
         </div>
-        <div className="pt-6 flex justify-between">
+        <div className="pt-6 flex justify-between items-center">
           <Link href="/surveys/new">
             <a> &larr; Go Back</a>
           </Link>
-          <button onClick={handleSendSurvey}>
-            <FontAwesomeIcon icon="envelope" className="mr-2" />
-            Send survey!
+          <button
+            className="flex items-center justify-center border-transparent text-sm text-white font-medium py-2 px-10 bg-ultramarine-1 hover:bg-ultramarine-2 rounded-md"
+            onClick={handleSendSurvey}
+          >
+            {loading ? (
+              <DotLoader loading={loading} size={10} color="white" />
+            ) : (
+              <span>
+                <FontAwesomeIcon icon="envelope" className="mr-2" />
+                Send survey!
+              </span>
+            )}
           </button>
         </div>
       </div>
