@@ -1,1 +1,1 @@
-# yesnosurveys.vercel.app frontend
+# survey app frontend
