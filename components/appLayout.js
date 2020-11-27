@@ -13,7 +13,7 @@ export default function AppLayout({ children }) {
       {!isFeedbackPage && <Header />}
       <main
         style={{ maxWidth: '1600px' }}
-        className="py-20 pl-4 pr-4 pb-20 w-screen mx-auto flex-grow"
+        className="py-10 pl-4 pr-4 pb-20 w-screen mx-auto flex-grow"
       >
         {children}
       </main>

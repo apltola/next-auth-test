@@ -1,0 +1,17 @@
+.heroLeft {
+  min-width: 400px;
+  line-height: 3.5em;
+}
+
+@media screen and (max-width: 768px) {
+  .heroLeft {
+    line-height: 2.8em;
+    min-width: 100vw;
+  }
+}
+
+@media screen and (max-width: 1020px) {
+  .heroLeft {
+    min-width: auto;
+  }
+}

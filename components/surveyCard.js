@@ -38,7 +38,7 @@ export default function SurveyCard({ survey, sessionToken }) {
   return (
     <article
       //style={{ minWidth: '400px' }}
-      className="flex flex-col bg-white shadow rounded-lg border border-gray-100 mb-8 md:mb-6 md:mx-3"
+      className="flex flex-col bg-white shadow-md rounded-lg border border-gray-100 mb-8 md:mb-6 md:mx-3"
     >
       <header className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h1 className="text-lg font-bold pr-4">{title}</h1>
