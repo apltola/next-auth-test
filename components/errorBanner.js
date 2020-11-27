@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Context } from '../context/errorContext';
 
-export default function ErrorBanner({ show, close }) {
+export default function ErrorBanner() {
   const {
     state: { showErrorBanner, errorBannerText },
     setShowBanner,

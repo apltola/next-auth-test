@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut, useSession } from 'next-auth/client';
 import MobileMenu from './mobileMenu';
 import ErrorBanner from './errorBanner';
+import HeaderDropdown from './headerDropdown';
 
 export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -17,14 +18,41 @@ export default function Header() {
   const isAuthPage =
     router.pathname === '/auth/signin' || router.pathname === '/auth/signup';
 
-  const closeMenu = () => setShowMobileMenu(false);
+  const closeMobileMenu = () => setShowMobileMenu(false);
+
+  const accountMenuLinks = [
+    {
+      type: 'label',
+      text: `Signed in as ${isAuthenticated ? session.user.name : null}`,
+    },
+    {
+      type: 'button',
+      onClick: () => signOut(),
+      text: 'Sign out',
+      iconName: 'sign-out-alt',
+    },
+  ];
+  const surveyMenuLinks = [
+    {
+      type: 'link',
+      href: '/surveys/overview',
+      text: 'Overview',
+      iconName: 'poll',
+    },
+    {
+      type: 'link',
+      href: '/surveys/new',
+      text: 'New survey',
+      iconName: 'plus-square',
+    },
+  ];
 
   return (
     <header className="relative bg-gray-900">
       <div className="px-4 sm:px-6">
         <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
           <div className="py-1">
-            <button onClick={closeMenu}>
+            <button onClick={closeMobileMenu}>
               <Link href="/">
                 <a className="text-gray-300 hover:text-white text-xl font-black">
                   YES|NO Surveys
@@ -49,56 +77,8 @@ export default function Header() {
             )}
             {isAuthenticated && (
               <React.Fragment>
-                <div
-                  className="relative text-white cursor-pointer"
-                  onMouseEnter={() => setshowSurveyMenu(true)}
-                  onMouseLeave={() => setshowSurveyMenu(false)}
-                >
-                  <div>
-                    Surveys{' '}
-                    <FontAwesomeIcon icon="caret-down" className="ml-2" />
-                  </div>
-                  <div className="relative">
-                    {showSurveyMenu && (
-                      <div className="absolute z-10 top-0 -ml-4 transform px-0 w-screen max-w-sm sm:px-0 sm:ml-0 sm:left-1/2 sm:-translate-x-1/2">
-                        <div className="flex flex-col p-2 mt-3 bg-white text-gray-900 shadow-md rounded-lg">
-                          <Link href="/surveys/overview">
-                            <button
-                              onClick={() => setshowSurveyMenu(false)}
-                              className="text-left p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
-                            >
-                              <a>
-                                <FontAwesomeIcon icon="poll" className="mr-4" />
-                                Overview
-                              </a>
-                            </button>
-                          </Link>
-                          <Link href="/surveys/new">
-                            <button
-                              onClick={() => setshowSurveyMenu(false)}
-                              className="text-left p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
-                            >
-                              <a>
-                                <FontAwesomeIcon
-                                  icon="plus-square"
-                                  className="mr-4"
-                                />
-                                New Survey
-                              </a>
-                            </button>
-                          </Link>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <button
-                  onClick={signOut}
-                  className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-ultramarine-1 hover:bg-ultramarine-2"
-                >
-                  Logout{' '}
-                  <FontAwesomeIcon icon="sign-out-alt" className="ml-2" />
-                </button>
+                <HeaderDropdown title="Surveys" links={surveyMenuLinks} />
+                <HeaderDropdown title="Account" links={accountMenuLinks} />
               </React.Fragment>
             )}
           </div>
@@ -114,12 +94,14 @@ export default function Header() {
           </div>
         </div>
       </div>
+
       <MobileMenu
         show={showMobileMenu}
         session={session}
-        close={closeMenu}
+        close={closeMobileMenu}
         signOut={signOut}
       />
+
       <ErrorBanner />
     </header>
   );

@@ -132,7 +132,7 @@ function NewSurveyPage() {
               placeholder="johndoe@gmail.com,janesmith@aol.com"
             />
           </div>
-          <div className="pt-6">
+          <div className="pt-6 text-right">
             <button type="submit">Next &rarr;</button>
           </div>
           {error && (

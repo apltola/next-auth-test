@@ -70,7 +70,7 @@ export default function MobileMenu({ show, session, close, signOut }) {
                     className="mr-4"
                     size="lg"
                   />
-                  Logout
+                  Logout {session.user.name}
                 </a>
               </button>
             </Link>

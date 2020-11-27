@@ -6,7 +6,7 @@ export default function SurveyFeedback() {
       <div>
         <h1 className="font-bold text-2xl">Hi there,</h1>
         <p className="text-lg pt-2">
-          <span className="mr-3">Thanks for your feedback!</span>
+          <span className="mr-3">Thank you for answering our survey!</span>
           <span className="text-2xl">👏</span>
         </p>
         <p className="pt-12 text-lg text-ultramarine-1 hover:text-ultramarine-2">
