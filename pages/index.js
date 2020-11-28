@@ -9,12 +9,12 @@ export default function LandingPage({ token }) {
   const router = useRouter();
   console.log('loading -> ', loading);
 
-  if (token) {
+  /* if (token) {
     if (typeof window !== 'undefined') {
       router.push('/surveys/overview');
     }
     return null;
-  }
+  } */
 
   return (
     <div className="flex-1 flex flex-col border pt-20 lg:pt-10">
@@ -66,5 +66,13 @@ export default function LandingPage({ token }) {
 
 export async function getServerSideProps(ctx) {
   const token = extractSessionToken(ctx);
+  /* const { req, res } = ctx;
+  if (token) {
+    console.log(token);
+    await res.writeHead(301, {
+      Location: '/surveys/overview',
+    });
+    res.end();
+  } */
   return { props: { token } };
 }

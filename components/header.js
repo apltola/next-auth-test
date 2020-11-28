@@ -15,6 +15,7 @@ export default function Header() {
   const router = useRouter();
 
   const isAuthenticated = session && !loading;
+
   const isAuthPage =
     router.pathname === '/auth/signin' || router.pathname === '/auth/signup';
 
@@ -23,7 +24,7 @@ export default function Header() {
   const accountMenuLinks = [
     {
       type: 'label',
-      text: `Signed in as ${isAuthenticated ? session.user.name : null}`,
+      text: `Signed in as ${!loading && session ? session.user.name : null}`,
     },
     {
       type: 'button',
@@ -60,28 +61,30 @@ export default function Header() {
               </Link>
             </button>
           </div>
-          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            {!isAuthPage && !isAuthenticated && (
-              <React.Fragment>
-                <Link href="/auth/signin">
-                  <a className="whitespace-nowrap text-base font-medium text-gray-300 hover:text-white">
-                    Sign in
-                  </a>
-                </Link>
-                <Link href="/auth/signup">
-                  <a className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-ultramarine-1 hover:bg-ultramarine-2">
-                    Sign up
-                  </a>
-                </Link>
-              </React.Fragment>
-            )}
-            {isAuthenticated && (
-              <React.Fragment>
-                <HeaderDropdown title="Surveys" links={surveyMenuLinks} />
-                <HeaderDropdown title="Account" links={accountMenuLinks} />
-              </React.Fragment>
-            )}
-          </div>
+          {!loading && (
+            <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+              {!isAuthPage && !session && (
+                <React.Fragment>
+                  <Link href="/auth/signin">
+                    <a className="whitespace-nowrap text-base font-medium text-gray-300 hover:text-white">
+                      Sign in
+                    </a>
+                  </Link>
+                  <Link href="/auth/signup">
+                    <a className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-1 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-ultramarine-1 hover:bg-ultramarine-2">
+                      Sign up
+                    </a>
+                  </Link>
+                </React.Fragment>
+              )}
+              {session && (
+                <React.Fragment>
+                  <HeaderDropdown title="Surveys" links={surveyMenuLinks} />
+                  <HeaderDropdown title="Account" links={accountMenuLinks} />
+                </React.Fragment>
+              )}
+            </div>
+          )}
 
           <div className="flex md:hidden">
             <button
