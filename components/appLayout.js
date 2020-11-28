@@ -7,13 +7,17 @@ export default function AppLayout({ children }) {
   const router = useRouter();
 
   const isFeedbackPage = router.pathname.includes('/feedback');
+  const isLandingPage = router.pathname === '/';
+  const mainStyles = isLandingPage
+    ? 'flex flex-grow w-screen mx-auto'
+    : 'flex-grow py-10 px-4 pb-20 w-screen mx-auto';
 
   return (
     <div style={{ minHeight: '100vh' }} className="flex flex-col">
       {!isFeedbackPage && <Header />}
       <main
-        style={{ maxWidth: '1600px' }}
-        className="py-10 pl-4 pr-4 pb-20 w-screen mx-auto flex-grow"
+        style={{ maxWidth: isLandingPage ? 'initial' : '1600px' }}
+        className={mainStyles}
       >
         {children}
       </main>

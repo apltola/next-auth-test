@@ -1,17 +1,24 @@
 .heroLeft {
-  min-width: 400px;
-  line-height: 3.5em;
+  min-width: 500px;
+}
+
+.title {
+  line-height: 3.2rem;
 }
 
 @media screen and (max-width: 768px) {
   .heroLeft {
-    line-height: 2.8em;
     min-width: 100vw;
+  }
+
+  .title {
+    line-height: 2.8rem;
   }
 }
 
 @media screen and (max-width: 1020px) {
   .heroLeft {
+    text-align: center;
     min-width: auto;
   }
 }
