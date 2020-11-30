@@ -19,7 +19,7 @@ export default function AppLayout({ children }) {
       >
         {children}
       </main>
-      <footer className="p-8 border text-center text-gray-500">
+      <footer className="p-8 border-t text-center text-gray-500">
         <div>allu © 2020</div>
       </footer>
     </div>

@@ -1,7 +1,7 @@
-function DashboardCard({ title, body, margin }) {
+function DashboardCard({ title, body }) {
   return (
     <div
-      className={`border border-gray-400 p-6 rounded my-${margin} md:my-0 mx-0 md:mx-${margin}`}
+      className="border border-gray-400 p-6 rounded"
       style={{ boxShadow: '0 2px 0 0 rgba(0,0,0,.03)', minWidth: '210px' }}
     >
       <h3 className="opacity-75 font-bold pb-2 text-center">{title}</h3>
@@ -16,13 +16,9 @@ export default function Dashboard({ user }) {
       <div>
         <h1 className="text-3xl font-bold pb-4">Hello, {user.username} 👋</h1>
         <h2 className="text-lg pb-12">Here's some of your activity</h2>
-        <div className="flex flex-col md:flex-row justify-center">
+        <div className="flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 space-x-0 md:space-x-6">
           <DashboardCard title="Surveys created" body={user.surveysCreated} />
-          <DashboardCard
-            title="Emails sent"
-            body={user.emailsSent}
-            margin={6}
-          />
+          <DashboardCard title="Emails sent" body={user.emailsSent} />
           <DashboardCard
             title="Responses received"
             body={user.responsesReceived}
