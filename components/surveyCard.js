@@ -38,7 +38,7 @@ export default function SurveyCard({ survey, sessionToken }) {
   return (
     <article
       //style={{ minWidth: '400px' }}
-      className="flex flex-col bg-white shadow-md rounded-lg border border-gray-100 mb-8 md:mb-6 md:mx-3"
+      className="flex flex-col bg-white shadow-md rounded-lg border border-gray-400 mb-8 md:mb-6 md:mx-3"
     >
       <header className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h1 className="text-lg font-bold pr-4">{title}</h1>
@@ -49,40 +49,40 @@ export default function SurveyCard({ survey, sessionToken }) {
           <fieldset className="border px-4 py-2 mb-6">
             <legend className="text-sm font-medium">Recipients</legend>
             <div className="flex justify-evenly">
-              <div className="">Amount: {recipientsAmount}</div>
-              <div>
+              <p>Amount: {recipientsAmount}</p>
+              <p>
                 Responded: {votesAmount} (
                 {(votesAmount / recipientsAmount) * 100}%)
-              </div>
+              </p>
             </div>
           </fieldset>
           <fieldset className="border px-2 md:px-4 py-2 mb-6">
             <legend className="text-sm font-medium">Email subject line</legend>
-            <div className="">{subject}</div>
+            <p>{subject}</p>
           </fieldset>
           <fieldset className="border px-2 md:px-4 py-2">
             <legend className="text-sm font-medium">Email body</legend>
-            <div className="">{body}</div>
+            <p>{body}</p>
           </fieldset>
           <div className="pt-6 flex">
             <SurveyCardChart hasVotes={hasVotes} yes={yes} no={no} />
             <div className="flex-1 flex flex-col justify-center items-start">
-              <div className="font-bold pl-4 py-1">
+              <p className="font-bold pl-4 py-1">
                 <FontAwesomeIcon
                   icon="circle"
                   color="#0197F6"
                   className="mr-1"
                 />{' '}
                 Yes: {yes}
-              </div>
-              <div className="font-bold pl-4 py-1">
+              </p>
+              <p className="font-bold pl-4 py-1">
                 <FontAwesomeIcon
                   icon="circle"
                   color="#D7263D"
                   className="mr-1"
                 />{' '}
                 No: {no}
-              </div>
+              </p>
             </div>
           </div>
           <div className="flex-1 flex justify-end items-end text-xl pt-2">

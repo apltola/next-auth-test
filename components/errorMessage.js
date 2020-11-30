@@ -19,5 +19,5 @@ export default function ErrorMessage({ error }) {
     }
   };
 
-  return <div className="text-red-500 pt-4 text-center">{render()}</div>;
+  return <p className="text-red-500 pt-4 text-center">{render()}</p>;
 }

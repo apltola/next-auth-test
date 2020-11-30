@@ -1,78 +1,47 @@
-import styles from '../styles/landing.module.css';
-import Link from 'next/link';
+import { useContext, useEffect } from 'react';
+import { Context as ErrorContext } from '../context/errorContext';
 import extractSessionToken from '../helpers/extractSessionToken';
-import { useSession } from 'next-auth/client';
-import { useRouter } from 'next/router';
+import LandingPageContent from '../components/landingPageContent';
+import buildApiClient from '../helpers/buildApiClient';
+import Dashboard from '../components/dashboard';
 
-export default function LandingPage({ token }) {
-  const [session, loading] = useSession();
-  const router = useRouter();
-  console.log('loading -> ', loading);
+export default function LandingPage({ showDashboard, user, errorMsg }) {
+  const { setShowBanner } = useContext(ErrorContext);
 
-  /* if (token) {
-    if (typeof window !== 'undefined') {
-      router.push('/surveys/overview');
+  useEffect(() => {
+    if (errorMsg) {
+      setShowBanner(true, errorMsg);
     }
-    return null;
-  } */
+  }, []);
 
-  return (
-    <div className="flex-1 flex flex-col border pt-20 lg:pt-10">
-      <div
-        className="flex flex-col lg:flex-row mx-auto"
-        style={{ maxWidth: '1600px' }}
-      >
-        <div
-          className={`${styles.heroLeft} flex-1 flex flex-col items-center justify-center pb-12 lg:pb-0`}
-        >
-          <div className="text-gray-900 pl-0">
-            <h1
-              className={`${styles.title} text-4xl md:text-5xl tracking-tight font-extrabold`}
-            >
-              <span className="block">Collect data with</span>
-              <span className="block text-ultramarine-2">yes-no questions</span>
-            </h1>
-            <div className="pt-10 pb-2 lg:pb-0 font-bold">
-              <Link href="/auth/signup">
-                <a className="hover:text-ultramarine-1">Create new account</a>
-              </Link>{' '}
-              ...or{' '}
-              <Link href="/auth/signin">
-                <a className="hover:text-ultramarine-1">sign in</a>
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="flex-0 text-right">
-          <img
-            src="/email.svg"
-            alt="email vector"
-            style={{ width: '100%', maxWidth: '1000px', maxHeight: '600px' }}
-          />
-        </div>
-      </div>
-      <div className="flex-grow pt-8 pb-20 mt-20 text-center bg-gray-200">
-        <h2 className="font-extrabold text-3xl">How it works</h2>
-        <p className="text-lg pt-4 font-medium">
-          1. Create your email survey with a list of recipients
-        </p>
-        <p className="text-lg pt-4 font-medium">
-          2. Send your survey and follow results in real-time
-        </p>
-      </div>
-    </div>
-  );
+  if (showDashboard) {
+    return <Dashboard user={user} />;
+  }
+
+  return <LandingPageContent />;
 }
 
 export async function getServerSideProps(ctx) {
+  let user = {};
+  let errorMsg = '';
   const token = extractSessionToken(ctx);
-  /* const { req, res } = ctx;
   if (token) {
-    console.log(token);
-    await res.writeHead(301, {
-      Location: '/surveys/overview',
-    });
-    res.end();
-  } */
-  return { props: { token } };
+    try {
+      const client = buildApiClient(token);
+      const res = await client.get('/api/user');
+      user = res.data;
+    } catch (error) {
+      console.log(error);
+      errorMsg =
+        'Server error occurred during page load, please try again later';
+    }
+  }
+
+  return {
+    props: {
+      showDashboard: token ? true : false,
+      user,
+      errorMsg,
+    },
+  };
 }

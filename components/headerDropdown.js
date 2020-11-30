@@ -12,9 +12,16 @@ export default function HeaderDropdown({ title, links }) {
   };
 
   const renderLinks = () => {
-    return links.map((link) => {
+    return links.map((link, idx) => {
       if (link.type === 'label') {
-        return <div className="text-left p-4 cursor-default">{link.text}</div>;
+        return (
+          <p
+            className="text-left p-4 cursor-default"
+            key={`${link.text}${idx}`}
+          >
+            {link.text}
+          </p>
+        );
       }
 
       if (link.type === 'button') {
@@ -22,6 +29,7 @@ export default function HeaderDropdown({ title, links }) {
           <button
             onClick={link.onClick}
             className="text-left p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg"
+            key={`${link.type}${idx}`}
           >
             <FontAwesomeIcon icon={link.iconName} className="mr-4" />
             {link.text}
@@ -32,7 +40,7 @@ export default function HeaderDropdown({ title, links }) {
       if (link.type === 'link') {
         const isSelected = linkIsSelected(link.href);
         return (
-          <Link href={link.href}>
+          <Link href={link.href} key={link.href}>
             <button
               onClick={() => setShow(false)}
               className={`text-left p-4 hover:bg-gray-100 active:bg-gray-200 rounded-lg ${

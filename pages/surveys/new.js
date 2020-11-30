@@ -8,7 +8,7 @@ import validateEmails from '../../helpers/validateEmails';
 function InfoOverlay({ text }) {
   return (
     <div className="absolute top-1 pt-2 w-screen max-w-xs left-0 -ml-20">
-      <div className="bg-white border shadow-md p-4 rounded-md">{text}</div>
+      <p className="bg-white border shadow-md p-4 rounded-md">{text}</p>
     </div>
   );
 }

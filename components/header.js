@@ -10,16 +10,11 @@ import HeaderDropdown from './headerDropdown';
 
 export default function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showSurveyMenu, setshowSurveyMenu] = useState(false);
   const [session, loading] = useSession();
   const router = useRouter();
 
-  const isAuthenticated = session && !loading;
-
   const isAuthPage =
     router.pathname === '/auth/signin' || router.pathname === '/auth/signup';
-
-  const closeMobileMenu = () => setShowMobileMenu(false);
 
   const accountMenuLinks = [
     {
@@ -53,7 +48,7 @@ export default function Header() {
       <div className="px-4 sm:px-6">
         <div className="flex justify-between items-center py-6 md:justify-start md:space-x-10">
           <div className="py-1">
-            <button onClick={closeMobileMenu}>
+            <button onClick={() => setShowMobileMenu(false)}>
               <Link href="/">
                 <a className="text-gray-300 hover:text-white text-xl font-black">
                   YES|NO Surveys
@@ -101,7 +96,7 @@ export default function Header() {
       <MobileMenu
         show={showMobileMenu}
         session={session}
-        close={closeMobileMenu}
+        close={() => setShowMobileMenu(false)}
         signOut={signOut}
       />
 
